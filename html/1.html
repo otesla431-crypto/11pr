@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Переміщення обʼєктів</title>
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      position: relative;
+      background: #f0f0f0;
+      overflow: hidden;
+    }
+
+    .object {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      cursor: grab;
+      user-select: none;
+    }
+
+    #obj1 { background: red;   top: 50px;  left: 50px; }
+    #obj2 { background: green; top: 50px;  left: 200px; }
+    #obj3 { background: blue;  top: 50px;  left: 350px; }
+  </style>
+</head>
+<body>
+
+  <div class="object" id="obj1"></div>
+  <div class="object" id="obj2"></div>
+  <div class="object" id="obj3"></div>
+
+  <script>
+    const objects = document.querySelectorAll('.object');
+
+    objects.forEach(obj => {
+      let offsetX = 0;
+      let offsetY = 0;
+      let isDragging = false;
+
+      obj.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - obj.offsetLeft;
+        offsetY = e.clientY - obj.offsetTop;
+        obj.style.cursor = 'grabbing';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        obj.style.left = (e.clientX - offsetX) + 'px';
+        obj.style.top  = (e.clientY - offsetY) + 'px';
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        obj.style.cursor = 'grab';
+      });
+    });
+  </script>
+
+</body>
+</html>
