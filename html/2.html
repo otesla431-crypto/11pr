@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Переміщення напівпрозорих обʼєктів</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #eaeaea;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .object {
+      position: absolute;
+      cursor: grab;
+      user-select: none;
+    }
+
+    /* 🔴 Квадрат */
+    #square {
+      width: 120px;
+      height: 120px;
+      background: rgba(255, 0, 0, 0.5); /* напівпрозорий RGB */
+      top: 60px;
+      left: 60px;
+    }
+
+    /* 🟢 Коло */
+    #circle {
+      width: 120px;
+      height: 120px;
+      background: rgba(0, 255, 0, 0.5);
+      border-radius: 50%;
+      top: 60px;
+      left: 240px;
+    }
+
+    /* 🔵 Трикутник */
+    #triangle {
+      width: 0;
+      height: 0;
+      border-left: 60px solid transparent;
+      border-right: 60px solid transparent;
+      border-bottom: 120px solid rgba(0, 0, 255, 0.5);
+      top: 60px;
+      left: 420px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="object" id="square"></div>
+  <div class="object" id="circle"></div>
+  <div class="object" id="triangle"></div>
+
+  <script>
+    const objects = document.querySelectorAll('.object');
+
+    objects.forEach(obj => {
+      let offsetX = 0;
+      let offsetY = 0;
+      let dragging = false;
+
+      obj.addEventListener('mousedown', (e) => {
+        dragging = true;
+        offsetX = e.clientX - obj.offsetLeft;
+        offsetY = e.clientY - obj.offsetTop;
+        obj.style.cursor = 'grabbing';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!dragging) return;
+
+        obj.style.left = (e.clientX - offsetX) + 'px';
+        obj.style.top  = (e.clientY - offsetY) + 'px';
+      });
+
+      document.addEventListener('mouseup', () => {
+        dragging = false;
+        obj.style.cursor = 'grab';
+      });
+    });
+  </script>
+
+</body>
+</html>
